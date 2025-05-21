@@ -1,0 +1,45 @@
+---
+#important paths and files
+tmp_dir: /path/to/tmp/
+matrixtables_lustre_dir: /path/to/matrixtables/
+results_dir: /path/to/results/
+
+# Step 1 load VCF
+gatk_import_lustre_dir: /path/to/the/folder/with/VCFs/
+skip_vcf_load: True
+#to skip step True
+
+# Step 2 hard filters
+# This step requires gatk_unprocessed.mt created in step 1
+skip_hard_filters: True
+
+# Step 3 sex imputation
+# This step requires mt_hard_filters_annotated.mt created in step 2
+skip_impute_sex: True
+
+# Step 4 simple QC
+hcr_bed: /lustre/scratch125/resources/exome/Homo_sapiens/Twist/Twist_Human_Core_Exome_BI-CTR.bed
+# This step requires gatk_unprocessed.mt created in step 1
+skip_simple_qc: False
+
+# Step 5 1kg processing
+#file with anniotation for samples from 1000 Genomes. Available here: https://www.internationalgenome.org/data-portal/sample (press the 'Download the list' button)
+kg_pop: /path/to/igsr_samples.tsv
+#BED file containing long-range linkage disequilibrium regions for the genome version hg38
+#The regions are obtained from the file `high-LD-regions-hg38-GRCh38.bed` in **plinkQC** github repo: (https://github.com/cran/plinkQC/blob/master/inst/extdata/high-LD-regions-hg38-GRCh38.bed).
+#These coordinates are results of `liftOver` transferring original coordinates from the genome version hg36 to hg38. Original coordinates are provided in supplementary files of the article **Anderson, Carl A., et al. "Data quality control in genetic case-control association studies." Nature protocols 5.9 (2010): 1564-1573. DOI: 10.1038/nprot.2010.116**
+long_range_ld: /path/to/long_ld_regions.hg38.bed
+#VCFs from 1000 Genome project. Available here: //ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV/
+kg_vcf: /path/to/the/folder/with/1000_Genome_project_VCF/
+skip_1kg_processing: True
+
+# Step 6 PCA
+# hcr_bed is required
+# kg_pop is required
+# long_range_ld is required
+# This step requires kg_filtered.mt created in step 5 and mt_sex_annotated.mt created in step 3
+skip_pca:  True
+
+# Step 7 Population assignment
+# This step requires pca_scores_after_pruning.ht created in step 6
+skip_assignments:  True
